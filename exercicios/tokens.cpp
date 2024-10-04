@@ -4,6 +4,8 @@
 #include <cctype>
 #include <memory>
 #include <vector>
+#include <unordered_map>
+#include <algorithm>
 
 struct Token {
   std::string lexem;
@@ -192,10 +194,27 @@ int main(int argc, char const *argv[]) {
 
   std::vector<std::shared_ptr<Token>> current_tokens;
   std::vector<std::shared_ptr<Token>> tokens;
+  std::vector<std::shared_ptr<Token>> idents;
+
+  std::vector<std::string> reserved{
+    "def",
+    "if",
+    "else",
+    "for",
+    "while",
+    "int",
+    "float",
+    "string",
+    "return",
+    "new",
+    "read",
+    "print"
+  };
 
   int start = 0;
+  auto filename = "file.txt";
 
-  std::ifstream file("file.txt");
+  std::ifstream file(filename);
 
   if(file.is_open()) {
     while(true) {
@@ -221,11 +240,47 @@ int main(int argc, char const *argv[]) {
       // std::cout << token->id << ' ' << token->lexem << " start " << token->start << " end " << token->end << std::endl;
       tokens.push_back(token);
       start = token->end - 1;
+
+      if (token->id != "IDENT") continue;
+      auto not_reserved = std::find(reserved.begin(), reserved.end(), token->lexem) == reserved.end();
+      if (not_reserved) {
+        idents.push_back(token);
+      }
     }
   }
-  for (auto & token: tokens) {
-    std::cout << token->id << ' ';
+  
+  std::unordered_map<std::string, std::vector<int>> symbols;
+  file.clear();
+  file.seekg(0);
+  std::string line;
+  int current_line = 1;
+  int last_pos = 0;
+  while (std::getline(file, line)) {
+    int current_pos = static_cast<int>(file.tellg());
+    for (const auto & token: idents) {
+      if (last_pos < token->start && current_pos >= token->start) {
+        if (symbols.find(token->lexem) != symbols.end()) {
+          if (std::find(symbols[token->lexem].begin(), symbols[token->lexem].end(), current_line) == symbols[token->lexem].end())
+            symbols[token->lexem].push_back(current_line);
+        } else {
+          symbols[token->lexem] = std::vector{current_line};
+        }
+      }
+    }
+    last_pos = current_pos;
+    current_line++;
   }
-  std::cout << std::endl;
+
+  for (const auto& pair : symbols) {
+        std::cout << pair.first << ": [";
+        for (int i = 0; i < pair.second.size(); i++) {
+          if (i == pair.second.size() - 1) {
+            std::cout << pair.second[i] << "]" << std::endl;
+          } else {
+            std::cout << pair.second[i] << ",";
+          }
+        }
+    }
+
   return 0;
 }
