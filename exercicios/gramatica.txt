@@ -12,7 +12,13 @@ PARAMLIST  ->  float ident, PARAMLIST
 PARAMLIST  ->  string ident, PARAMLIST  
 PARAMLIST  ->  int ident  
 PARAMLIST  ->  float ident  
-PARAMLIST  ->  string ident  
+PARAMLIST  ->  string ident
+PARAMLIST  ->  tint ident INDEX_T
+PARAMLIST  ->  tfloat ident INDEX_T
+PARAMLIST  ->  tstring ident INDEX_T
+PARAMLIST  ->  tint ident INDEX_T, PARAMLIST
+PARAMLIST  ->  tfloat ident INDEX_T, PARAMLIST
+PARAMLIST  ->  tstring ident INDEX_T, PARAMLIST
 PARAMLIST  ->  e
  
 STATEMENT  ->  VARDECL;  
@@ -28,6 +34,8 @@ STATEMENT  ->  ;
  
 INDEX  ->  [int_contant]  
 INDEX  ->  [int_constant]INDEX
+
+INDEX_T  ->  [int_contant]
  
 VARDECL  ->  int ident  
 VARDECL  ->  float ident  
@@ -35,6 +43,9 @@ VARDECL  ->  string ident
 VARDECL  ->  int ident INDEX  
 VARDECL  ->  float ident INDEX  
 VARDECL  ->  string ident INDEX
+VARDECL  ->  tint ident INDEX_T  
+VARDECL  ->  tfloat ident INDEX_T  
+VARDECL  ->  tstring ident INDEX_T
  
 ATRIBSTAT  ->  LVALUE = EXPRESSION  
 ATRIBSTAT  ->  LVALUE = ALLOCEXPRESSION  
@@ -50,6 +61,7 @@ PRINTSTAT  ->  print EXPRESSION
  
 READSTAT  ->  read LVALUE
  
+RETURNSTAT  ->  return ident
 RETURNSTAT  ->  return
  
 IFSTAT  ->  if(EXPRESSION) STATEMENT  
@@ -74,8 +86,15 @@ RELOP  ->  >=
 RELOP  ->  ==  
 RELOP  ->  !=
  
-EXPRESSION  ->  NUMEXPRESSION  
-EXPRESSION  ->  NUMEXPRESSION RELOP NUMEXPRESSION
+EXPRESSION  ->  EXPRESSION_2 or EXPRESSION_2
+EXPRESSION  ->  EXPRESSION_2
+EXPRESSION_2 -> EXPRESSION_3 and EXPRESSION_3
+EXPRESSION_2 -> EXPRESSION_3
+EXPRESSION_3 -> not EXPRESSION_4
+EXPRESSION_3 -> EXPRESSION_4
+EXPRESSION_4 -> (EXPRESSION)
+EXPRESSION_4 -> NUMEXPRESSION
+EXPRESSION_4 -> NUMEXPRESSION RELOP NUMEXPRESSION
  
 NUMEXPRESSIONAUX  ->  +NUMEXPRESSION  
 NUMEXPRESSIONAUX  ->  -NUMEXPRESSION
