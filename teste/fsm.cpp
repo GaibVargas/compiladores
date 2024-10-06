@@ -58,6 +58,7 @@ public:
       return;
     }
     auto next_state = _transitions.at(_current_state)(c);
+    _current_state = next_state;
 
     if (next_state == "dead")
     {
@@ -66,7 +67,6 @@ public:
     }
 
     _lexeme += c;
-    _current_state = next_state;
     if (_final_states.find(next_state) != _final_states.end())
     {
       _status = FSMStatus::SUCCESS;
