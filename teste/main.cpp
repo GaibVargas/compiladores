@@ -32,13 +32,13 @@ int main() {
   fsm.transition('c');
   fsm.transition('d');
   std::cout << "Estado final " << fsm.get_status() << std::endl;
-  std::cout << "Lexema " << fsm.get_lexeme() << std::endl;
+  std::cout << "lexemea " << fsm.get_lexeme() << std::endl;
   fsm.reset();
   std::cout << "Estado depois do reset " << fsm.get_status() << std::endl;
   fsm.transition('a');
   fsm.transition('b');
   fsm.transition('c');
   std::cout << "Estado final 2 " << fsm.get_status() << std::endl;
-  std::cout << "Lexema " << fsm.get_lexeme() << std::endl;
+  std::cout << "lexemea " << fsm.get_lexeme() << std::endl;
   return 0;
 }
