@@ -59,6 +59,7 @@ int main() {
   char c;
   int line = 1;
   int column = 0;
+  int line_between_current_token_reading = 0;
   bool reading_token = false;
 
   if(file.is_open()) {
@@ -69,6 +70,7 @@ int main() {
       if (c == '\n') {
         line++;
         column = 0;
+        if (reading_token) line_between_current_token_reading++;
       }
 
       if (isWhitespace(c) && !reading_token) continue;
@@ -104,11 +106,14 @@ int main() {
 
         std::cout << token->id << ' ' << token->lexeme << ' ' << token->line << ":" << token->column << std::endl;
 
-        int next_cursor_position = choosen_token->start + token->lexeme.size();
         column = token->column + token->lexeme.size() - 1;
-        // if (isWhitespace(c)) next_cursor_position++; Isso tem problema no caso do token identificado não ser o último autômato a rodar
+        if (line_between_current_token_reading) {
+          line -= line_between_current_token_reading;
+          line_between_current_token_reading = 0;
+        }
 
         file.clear();
+        int next_cursor_position = choosen_token->start + token->lexeme.size();
         file.seekg(next_cursor_position);
 
         for (const auto &token_identifier: token_identifiers) {
