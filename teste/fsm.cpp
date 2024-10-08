@@ -1,91 +1,51 @@
-#include <unordered_map>
-#include <string>
-#include <functional>
-#include <vector>
-#include <set>
+#include "fsm.h"
 
-enum FSMStatus
+void FiniteStateMachine::reset()
 {
-  IDLE,
-  RUNNING,
-  SUCCESS,
-  ERROR
-};
+  _current_state = _initial_state;
+  _lexeme = "";
+  _status = FSMStatus::IDLE;
+}
 
-class FiniteStateMachine
+FSMStatus FiniteStateMachine::transition(char c)
 {
-private:
-  std::unordered_map<std::string, std::function<std::string(char)>> _transitions;
-  std::string _initial_state;
-  std::set<std::string> _final_states;
-  std::set<std::string> _cursor_back_final_states;
-  std::string _current_state;
-  std::string _lexeme;
-  FSMStatus _status;
+  if (_status == FSMStatus::ERROR)
+    return _status;
 
-public:
-  FiniteStateMachine(
-      std::unordered_map<std::string, std::function<std::string(char)>> transitions,
-      std::string initial_state,
-      std::set<std::string> final_states,
-      std::set<std::string> cursor_back_final_states = {}) : _transitions(transitions), _initial_state(initial_state), _final_states(final_states), _cursor_back_final_states(cursor_back_final_states), _current_state(initial_state) {}
-
-  void reset()
+  if (_transitions.find(_current_state) == _transitions.end())
   {
-    _current_state = _initial_state;
-    _lexeme = "";
-    _status = FSMStatus::IDLE;
+    _status = FSMStatus::ERROR;
+    return _status;
   }
+  auto next_state = _transitions.at(_current_state)(c);
+  _current_state = next_state;
 
-  FSMStatus get_status()
+  if (next_state == "dead")
   {
+    _status = FSMStatus::ERROR;
     return _status;
   }
 
-  std::string get_lexeme()
+  if (_final_states.find(next_state) != _final_states.end())
   {
-    return _lexeme;
+    _status = FSMStatus::SUCCESS;
+  }
+  else
+  {
+    _status = FSMStatus::RUNNING;
   }
 
-  FSMStatus transition(char c)
-  {
-    if (_status == FSMStatus::ERROR)
-      return _status;
+  if (!has_to_move_cursor_back())
+    _lexeme += c;
 
-    if (_transitions.find(_current_state) == _transitions.end())
-    {
-      _status = FSMStatus::ERROR;
-      return _status;
-    }
-    auto next_state = _transitions.at(_current_state)(c);
-    _current_state = next_state;
+  return _status;
+}
 
-    if (next_state == "dead")
-    {
-      _status = FSMStatus::ERROR;
-      return _status;
-    }
-
-    if (_final_states.find(next_state) != _final_states.end())
-    {
-      _status = FSMStatus::SUCCESS;
-    }
-    else
-    {
-      _status = FSMStatus::RUNNING;
-    }
-
-    if (!has_to_move_cursor_back()) _lexeme += c;
-
-    return _status;
-  }
-
-  bool has_to_move_cursor_back()
-  {
-    if (_status != FSMStatus::SUCCESS)
-      return false;
-    if (_final_states.find(_current_state) == _final_states.end())
-      return false;
-    return _cursor_back_final_states.find(_current_state) != _cursor_back_final_states.end();
-  }
-};
+bool FiniteStateMachine::has_to_move_cursor_back()
+{
+  if (_status != FSMStatus::SUCCESS)
+    return false;
+  if (_final_states.find(_current_state) == _final_states.end())
+    return false;
+  return _cursor_back_final_states.find(_current_state) != _cursor_back_final_states.end();
+}

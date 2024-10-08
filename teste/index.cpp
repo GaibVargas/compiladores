@@ -3,147 +3,7 @@
 #include <memory>
 #include <fstream>
 #include <iostream>
-#include "fsm.cpp"
-
-bool isAlpha(char ch) {
-  return std::isalpha(static_cast<unsigned char>(ch));
-}
-
-bool isNumeric(char ch) {
-  return std::isdigit(static_cast<unsigned char>(ch));
-}
-
-bool isWhitespace(char c) {
-  return std::isspace(static_cast<unsigned char>(c));
-}
-
-struct Token
-{
-  std::string lexeme;
-  std::string id;
-  int line;
-  int column;
-
-  Token(const std::string &lexeme, const std::string &id, int line, int column)
-      : lexeme(lexeme), id(id), line(line), column(column) {}
-};
-
-class TokenIdentifier
-{
-public:
-  int cursor_start;
-  int start_line;
-  int start_column;
-protected:
-  std::string _id;
-  std::unique_ptr<FiniteStateMachine> _identifier_machine;
-
-public:
-  TokenIdentifier(const std::string &id) : _id(id) {}
-  std::string get_id() {
-    return _id;
-  }
-  void reset()
-  {
-    _identifier_machine->reset();
-  }
-  FSMStatus analyze(char c, int cursor_position, int line, int column)
-  {
-    auto prev_status = _identifier_machine->get_status();
-    if (prev_status == FSMStatus::ERROR || prev_status == FSMStatus::SUCCESS)
-      return prev_status;
-    auto current_status = _identifier_machine->transition(c);
-    if (prev_status == FSMStatus::IDLE && (current_status == FSMStatus::RUNNING || current_status == FSMStatus::SUCCESS)) {
-      cursor_start = cursor_position;
-      start_line = line;
-      start_column = column;
-    }
-    return current_status;
-  };
-  std::string get_lexeme()
-  {
-    return _identifier_machine->get_lexeme();
-  }
-  bool has_already_succeeded() {
-    return _identifier_machine->get_status() == FSMStatus::SUCCESS;
-  }
-};
-
-class IdentTokenIdentifier : public TokenIdentifier
-{
-  public:
-    IdentTokenIdentifier(): TokenIdentifier("IDENT") {
-      _identifier_machine = std::make_unique<FiniteStateMachine>(
-        std::unordered_map<std::string, std::function<std::string(char)>>{
-          {"0", [](char c) {
-            if (isAlpha(c)) return "1";
-            return "dead";
-          }},
-          {"1", [](char c) {
-            if (isAlpha(c) || isNumeric(c)) return "1";
-            return "final";
-          }},
-        },
-        "0",
-        std::set<std::string>{"final"},
-        std::set<std::string>{"final"}
-      );
-    }
-};
-
-class IntegerTokenIdentifier : public TokenIdentifier
-{
-  public:
-    IntegerTokenIdentifier(): TokenIdentifier("NI") {
-      _identifier_machine = std::make_unique<FiniteStateMachine>(
-        std::unordered_map<std::string, std::function<std::string(char)>>{
-          {"0", [](char c) {
-            if (isNumeric(c)) return "1";
-            return "dead";
-          }},
-          {"1", [](char c) {
-            if (isNumeric(c)) return "1";
-            if (c == 'e') return "2";
-            return "final";
-          }},
-          {"2", [](char c) {
-            if (isNumeric(c)) return "3";
-            if (c == '+' || c == '-') return "4";
-            return "dead";
-          }},
-          {"3", [](char c) {
-            if (isNumeric(c)) return "3";
-            return "final";
-          }},
-          {"4", [](char c) {
-            if (isNumeric(c)) return "3";
-            return "dead";
-          }},
-        },
-        "0",
-        std::set<std::string>{"final"},
-        std::set<std::string>{"final"}
-      );
-    }
-};
-
-class OtherTokenIdentifier : public TokenIdentifier
-{
-  public:
-    OtherTokenIdentifier(): TokenIdentifier("OTHER") {
-      _identifier_machine = std::make_unique<FiniteStateMachine>(
-        std::unordered_map<std::string, std::function<std::string(char)>>{
-          {"0", [](char c) {
-            if (!isAlpha(c) && !isNumeric(c) && !isWhitespace(c)) return "final";
-            return "dead";
-          }},
-        },
-        "0",
-        std::set<std::string>{"final"}
-      );
-    }
-};
-
+#include "tokens.h"
 
 struct PossibleToken
 {
@@ -245,6 +105,7 @@ int main() {
         std::cout << token->id << ' ' << token->lexeme << ' ' << token->line << ":" << token->column << std::endl;
 
         int next_cursor_position = choosen_token->start + token->lexeme.size();
+        column = token->column + token->lexeme.size() - 1;
         // if (isWhitespace(c)) next_cursor_position++; Isso tem problema no caso do token identificado não ser o último autômato a rodar
 
         file.clear();
