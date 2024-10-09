@@ -71,6 +71,12 @@ class IntegerTokenIdentifier : public TokenIdentifier
     IntegerTokenIdentifier();
 };
 
+class FloatTokenIdentifier : public TokenIdentifier
+{
+  public:
+    FloatTokenIdentifier();
+};
+
 class OtherTokenIdentifier : public TokenIdentifier
 {
   public:
