@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include "tokens.h"
+#include "symbols_table.h"
 
 struct PossibleToken
 {
@@ -46,10 +47,16 @@ int main()
       "int",
       "float",
       "string",
+      "tint",
+      "tfloat",
+      "tstring",
       "return",
       "new",
       "read",
-      "print"};
+      "print",
+      "and",
+      "or",
+      "not"};
   std::vector<std::shared_ptr<TokenIdentifier>> token_identifiers{
       std::make_shared<IdentTokenIdentifier>(),
       std::make_shared<IntegerTokenIdentifier>(),
@@ -57,6 +64,8 @@ int main()
       std::make_shared<OtherTokenIdentifier>()};
   std::vector<std::shared_ptr<Token>> tokens;
   std::vector<std::shared_ptr<PossibleToken>> possible_tokens;
+
+  auto symbol_table = std::make_unique<SymbolsTable>();
 
   auto filename = "file.txt";
   std::ifstream file(filename);
@@ -120,9 +129,10 @@ int main()
         auto choosen_token = get_longest_token(possible_tokens);
         auto token = choosen_token->token;
         tokens.push_back(token);
-        possible_tokens.clear();
 
-        std::cout << token->id << ' ' << token->lexeme << ' ' << token->line << ":" << token->column << std::endl;
+        if (token->id == "IDENT" && std::find(reserved.begin(), reserved.end(), token->lexeme) == reserved.end())
+          symbol_table->add_symbol(token);
+        // std::cout << token->id << ' ' << token->lexeme << ' ' << token->line << ":" << token->column << std::endl;
 
         column = token->column + token->lexeme.size() - 1;
         if (line_between_current_token_reading)
@@ -135,6 +145,7 @@ int main()
         int next_cursor_position = choosen_token->start + token->lexeme.size();
         file.seekg(next_cursor_position);
 
+        possible_tokens.clear();
         for (const auto &token_identifier : token_identifiers)
         {
           token_identifier->reset();
@@ -142,4 +153,5 @@ int main()
       }
     }
   }
+  symbol_table->print(std::cout);
 }
