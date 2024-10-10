@@ -18,7 +18,7 @@ void SymbolsTable::print(std::ostream &out)
   for (const auto &pair : _table)
   {
     out << pair.first << ": [";
-    for (int i = 0; i < pair.second.size(); i++)
+    for (uint i = 0; i < pair.second.size(); i++)
     {
       if (i == pair.second.size() - 1)
       {

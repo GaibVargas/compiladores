@@ -17,11 +17,11 @@ struct PossibleToken
 std::shared_ptr<PossibleToken> get_longest_token(std::vector<std::shared_ptr<PossibleToken>> &possible_tokens)
 {
   std::shared_ptr<PossibleToken> response;
-  int longest = 0;
+  uint longest = 0;
   int index = 0;
   for (const auto &possible_token : possible_tokens)
   {
-    auto token_size = possible_token->token->lexeme.size();
+    uint token_size = possible_token->token->lexeme.size();
     if (index == 0)
     {
       longest = token_size;
