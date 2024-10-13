@@ -1,0 +1,98 @@
+Non-Terminal Symbol	First Set
+ε	ε
+def	def
+ident	ident
+(	(
+)	)
+{	{
+}	}
+int	int
+float	float
+string	string
+tint	tint
+tfloat	tfloat
+tstring	tstring
+v	v
+;	;
+break	break
+[	[
+int_constant	int_constant
+]	]
+=	=
+print	print
+read	read
+return	return
+if	if
+else	else
+for	for
+new	new
+<	<
+>	>
+<=	<=
+>=	>=
+==	==
+!=	!=
+or	or
+and	and
+not	not
++	+
+-	-
+*	*
+/	/
+%	%
+float_constant	float_constant
+string_constant	string_constant
+null	null
+PROGRAM	ε, {, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read, def
+FUNCLIST'	ε, def
+FUNCDEF	def
+PARAMLIST	int, float, string, tint, tfloat, tstring, ε
+PARAMLISTINT	v, ε
+PARAMLISTFLOAT	v, ε
+PARAMLISTSTRING	v, ε
+PARAMLISTTINT	v, ε
+PARAMLISTTFLOAT	v, ε
+PARAMLISTTSTRING	v, ε
+STATEMENT	{, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read
+INDEX	[
+INDEX'	ε, [
+INDEX_T	[
+VARDECL	int, float, string, tint, tfloat, tstring
+VARDECL'	ε, [
+FUNCCALL	ident
+PARAMLISTCALL	ident, ε
+PARAMLISTCALL'	v, ε
+PRINTSTAT	print
+READSTAT	read
+RETURNSTAT	return
+RETURNSTAT'	ident, ε
+IFSTAT	if
+IFSTAT'	else, ε
+FORSTAT	for
+STATELIST'	ε, {, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read
+ALLOCAUX	[
+ALLOCAUX'	ε, [
+ALLOCEXPRESSION	new
+ALLOCEXPRESSION'	int, float, string
+RELOP	<, >, <=, >=, ==, !=
+EXPRESSION_2'	or, ε
+EXPRESSION_3'	and, ε
+EXPRESSION_3	not, (, +, -, int_constant, float_constant, string_constant, null, ident
+EXPRESSION_4	(, +, -, int_constant, float_constant, string_constant, null, ident
+EXPRESSION_4'	ε, <, >, <=, >=, ==, !=
+NUMEXPRESSIONAUX	+, -
+NUMEXPRESSION'	ε, +, -
+TERM'	ε, *, /, %
+UNARYEXPRAUX	*, /, %
+UNARYEXPR	+, -, int_constant, float_constant, string_constant, null, (, ident
+FACTOR	int_constant, float_constant, string_constant, null, (, ident
+LVALUE	ident
+LVALUE'	ε, [
+FUNCLIST	def
+ATRIBSTAT	ident
+TERM	+, -, int_constant, float_constant, string_constant, null, (, ident
+STATELIST	{, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read
+NUMEXPRESSION	+, -, int_constant, float_constant, string_constant, null, (, ident
+EXPRESSION_2	not, (, +, -, int_constant, float_constant, string_constant, null, ident
+EXPRESSION	not, (, +, -, int_constant, float_constant, string_constant, null, ident
+ATRIBSTAT'	not, (, +, -, int_constant, float_constant, string_constant, null, ident, new
