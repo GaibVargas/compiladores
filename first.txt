@@ -96,3 +96,21 @@ NUMEXPRESSION	+, -, int_constant, float_constant, string_constant, null, (, iden
 EXPRESSION_2	not, (, +, -, int_constant, float_constant, string_constant, null, ident
 EXPRESSION	not, (, +, -, int_constant, float_constant, string_constant, null, ident
 ATRIBSTAT'	not, (, +, -, int_constant, float_constant, string_constant, null, ident, new
+
+STATEMENT	{, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read
+
+VARDECL	int, float, string, tint, tfloat, tstring
+ATRIBSTAT	ident
+PRINTSTAT	print
+READSTAT	read
+RETURNSTAT	return
+IFSTAT	if
+FORSTAT	for
+
+EXPRESSION	not, (, +, -, int_constant, float_constant, string_constant, null, ident
+
+ALLOCEXPRESSION	new
+FUNCCALL	ident 
+# TODO: Colocar call no inicio de funccall
+
+NUMEXPRESSION	+, -, int_constant, float_constant, string_constant, null, (, ident
