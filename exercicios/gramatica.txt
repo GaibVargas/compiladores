@@ -6,8 +6,9 @@ PROGRAM  ->  e
 
 # Observando todas as produções do não terminal FUNCLIST, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo   
-FUNCLIST  ->  FUNCDEF FUNCLIST  
-FUNCLIST  ->  FUNCDEF
+FUNCLIST  ->  FUNCDEF FUNCLIST'
+FUNCLIST' ->  FUNCLIST
+FUNCLIST' ->  e
 
 # Observando todas as produções do não terminal FUNCDEF, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo  
@@ -15,18 +16,30 @@ FUNCDEF  ->  def ident(PARAMLIST){STATELIST}
 
 # Observando todas as produções do não terminal PARAMLIST, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo 
-PARAMLIST  ->  int ident, PARAMLIST  
-PARAMLIST  ->  float ident, PARAMLIST  
-PARAMLIST  ->  string ident, PARAMLIST  
-PARAMLIST  ->  int ident  
-PARAMLIST  ->  float ident  
-PARAMLIST  ->  string ident
-PARAMLIST  ->  tint ident INDEX_T
-PARAMLIST  ->  tfloat ident INDEX_T
-PARAMLIST  ->  tstring ident INDEX_T
-PARAMLIST  ->  tint ident INDEX_T, PARAMLIST
-PARAMLIST  ->  tfloat ident INDEX_T, PARAMLIST
-PARAMLIST  ->  tstring ident INDEX_T, PARAMLIST
+PARAMLIST  ->  int ident PARAMLISTINT
+PARAMLISTINT -> , PARAMLIST
+PARAMLISTINT -> e
+
+PARAMLIST -> float ident PARAMLISTFLOAT
+PARAMLISTFLOAT -> , PARAMLIST
+PARAMLISTFLOAT -> e
+
+PARAMLIST  ->  string ident PARAMLISTSTRING
+PARAMLISTSTRING -> , PARAMLIST
+PARAMLISTSTRING -> e
+
+PARAMLIST  ->  tint ident INDEX_T PARAMLISTTINT
+PARAMLISTTINT -> , PARAMLIST
+PARAMLISTTINT -> e
+
+PARAMLIST  ->  tfloat ident INDEX_T PARAMLISTTFLOAT
+PARAMLISTTFLOAT -> , PARAMLIST
+PARAMLISTTFLOAT -> e
+
+PARAMLIST  ->  tstring ident INDEX_T PARAMLISTTSTRING
+PARAMLISTTSTRING -> , PARAMLIST
+PARAMLISTTSTRING -> e
+
 PARAMLIST  ->  e
 
 # Observando todas as produções do não terminal STATEMENT, 
@@ -65,9 +78,10 @@ VARDECL  ->  tstring ident INDEX_T
 
 # Observando todas as produções do não terminal ATRIBSTAT, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo 
-ATRIBSTAT  ->  LVALUE = EXPRESSION  
-ATRIBSTAT  ->  LVALUE = ALLOCEXPRESSION  
-ATRIBSTAT  ->  LVALUE = FUNCCALL
+ATRIBSTAT  -> LVALUE = ATRIBSTAT'
+ATRIBSTAT' -> EXPRESSION 
+ATRIBSTAT' -> ALLOCEXPRESSION  
+ATRIBSTAT' -> FUNCCALL 
  
 # Observando todas as produções do não terminal FUNCCALL, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo 
@@ -75,9 +89,10 @@ FUNCCALL  ->  ident(PARAMLISTCALL)
  
 # Observando todas as produções do não terminal PARAMLISTCALL, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo 
-PARAMLISTCALL  ->  ident, PARAMLISTCALL  
-PARAMLISTCALL  ->  ident  
+PARAMLISTCALL  ->  ident PARAMLISTCALL'    
 PARAMLISTCALL  ->  e
+PARAMLISTCALL' ->  , PARAMLISTCALL  
+PARAMLISTCALL' ->  e
  
 # Observando todas as produções do não terminal PRINTSTAT, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo 
@@ -89,8 +104,9 @@ READSTAT  ->  read LVALUE
  
 # Observando todas as produções do não terminal RETURNSTAT, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo 
-RETURNSTAT  ->  return ident
-RETURNSTAT  ->  return
+RETURNSTAT  ->  return RETURNSTAT'
+RETURNSTAT' ->  ident
+RETURNSTAT' ->  e
  
 # Observando todas as produções do não terminal IFSTAT, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo 
@@ -104,19 +120,22 @@ FORSTAT  ->  for(ATRIBSTAT; EXPRESSION; ATRIBSTAT) STATEMENT
  
 # Observando todas as produções do não terminal STATELIST, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo  
-STATELIST  ->  STATEMENT STATELIST  
-STATELIST  ->  STATEMENT
+STATELIST  ->  STATEMENT STATELIST'
+STATELIST' ->  STATELIST
+STATELIST' ->  e
  
 # Observando todas as produções do não terminal ALLOCAUX, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo  
-ALLOCAUX  ->  [NUMEXPRESSION] ALLOCAUX  
-ALLOCAUX  ->  [NUMEXPRESSION]
+ALLOCAUX  ->  [NUMEXPRESSION] ALLOCAUX'
+ALLOCAUX' ->  ALLOCAUX
+ALLOCAUX' ->  e
  
 # Observando todas as produções do não terminal ALLOCEXPRESSION, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo  
-ALLOCEXPRESSION  ->  new int ALLOCAUX  
-ALLOCEXPRESSION  ->  new float ALLOCAUX  
-ALLOCEXPRESSION  ->  new string ALLOCAUX
+ALLOCEXPRESSION  ->  new ALLOCEXPRESSION'
+ALLOCEXPRESSION' ->  int ALLOCAUX  
+ALLOCEXPRESSION' ->  float ALLOCAUX  
+ALLOCEXPRESSION' ->  string ALLOCAUX  
  
 # Observando todas as produções do não terminal RELOP, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo  
@@ -129,15 +148,18 @@ RELOP  ->  !=
  
 # Observando todas as produções do não terminal EXPRESSION_*, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo  
-EXPRESSION  ->  EXPRESSION_2 or EXPRESSION_2
-EXPRESSION  ->  EXPRESSION_2
-EXPRESSION_2 -> EXPRESSION_3 and EXPRESSION_3
-EXPRESSION_2 -> EXPRESSION_3
+EXPRESSION  ->  EXPRESSION_2 EXPRESSION_2'
+EXPRESSION_2' -> or EXPRESSION_2
+EXPRESSION_2' -> e
+EXPRESSION_2 -> EXPRESSION_3 EXPRESSION_3'
+EXPRESSION_3'-> and EXPRESSION_3
+EXPRESSION_3'-> e
 EXPRESSION_3 -> not EXPRESSION_4
 EXPRESSION_3 -> EXPRESSION_4
 EXPRESSION_4 -> (EXPRESSION)
-EXPRESSION_4 -> NUMEXPRESSION
-EXPRESSION_4 -> NUMEXPRESSION RELOP NUMEXPRESSION
+EXPRESSION_4 -> NUMEXPRESSION EXPRESSION_4'
+EXPRESSION_4' -> RELOP NUMEXPRESSION
+EXPRESSION_4' -> e
  
 # Observando todas as produções do não terminal NUMEXPRESSIONAUX, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo
@@ -146,13 +168,15 @@ NUMEXPRESSIONAUX  ->  -NUMEXPRESSION
  
 # Observando todas as produções do não terminal NUMEXPRESSION, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo
-NUMEXPRESSION  ->  TERM  
-NUMEXPRESSION  ->  TERM NUMEXPRESSIONAUX
- 
+NUMEXPRESSION   ->  TERM NUMEXPRESSION'
+NUMEXPRESSION'  ->  NUMEXPRESSIONAUX
+NUMEXPRESSION'  ->  e
+
 # Observando todas as produções do não terminal TERM, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo
-TERM  ->  UNARYEXPR  
-TERM  ->  UNARYEXPR UNARYEXPRAUX
+TERM  ->  UNARYEXPR TERM'  
+TERM' ->  UNARYEXPRAUX
+TERM' ->  e
  
 # Observando todas as produções do não terminal UNARYEXPRAUX, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo
