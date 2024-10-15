@@ -85,7 +85,7 @@ ATRIBSTAT' -> FUNCCALL
  
 # Observando todas as produções do não terminal FUNCCALL, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo 
-FUNCCALL  ->  ident(PARAMLISTCALL)
+FUNCCALL  ->  call(ident(PARAMLISTCALL))
  
 # Observando todas as produções do não terminal PARAMLISTCALL, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo 
@@ -148,16 +148,16 @@ RELOP  ->  !=
  
 # Observando todas as produções do não terminal EXPRESSION_*, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo  
-EXPRESSION  ->  EXPRESSION_2 EXPRESSION_2'
-EXPRESSION_2' -> or EXPRESSION_2
+EXPRESSION    -> EXPRESSION_2 EXPRESSION'
+EXPRESSION'   -> or EXPRESSION_2
+EXPRESSION'   -> e
+EXPRESSION_2  -> EXPRESSION_3 EXPRESSION_2'
+EXPRESSION_2' -> and EXPRESSION_3
 EXPRESSION_2' -> e
-EXPRESSION_2 -> EXPRESSION_3 EXPRESSION_3'
-EXPRESSION_3'-> and EXPRESSION_3
-EXPRESSION_3'-> e
-EXPRESSION_3 -> not EXPRESSION_4
-EXPRESSION_3 -> EXPRESSION_4
-EXPRESSION_4 -> (EXPRESSION)
-EXPRESSION_4 -> NUMEXPRESSION EXPRESSION_4'
+EXPRESSION_3  -> not EXPRESSION_4
+EXPRESSION_3  -> EXPRESSION_4
+EXPRESSION_4  -> bool(NUMEXPRESSION EXPRESSION_4')
+EXPRESSION_4  -> (EXPRESSION)
 EXPRESSION_4' -> RELOP NUMEXPRESSION
 EXPRESSION_4' -> e
  
