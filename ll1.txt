@@ -56,8 +56,8 @@ PARAMLIST' -> e
 # Observando todos as produções de PARAMLIST',
 # pode-se observar que não existe intersecções entre os firsts de suas produções,
 # uma vez que:
-first(,) = ,
-first(e) = e
+# first(,) = ,
+# first(e) = e
 # Uma vez que PARAMLIST' ->* e, podemos checar que a interseção entre
 # seu follow e os firsts de suas produções é vazio
 # follow(PARAMLIST') = )
@@ -76,15 +76,15 @@ STATEMENT  ->  ;
 # Observando todos as produções de STATEMENT,
 # pode-se observar que não existe intersecções entre os firsts de suas produções,
 # uma vez que:
-first(VARDECL) = int, float, string, tint, tfloat, tstring 
-first(ATRIBSTAT) = ident
-first(PRINTSTAT) = print 
-first(READSTAT) = read
-first(IFSTAT) = if
-first(FORSTAT) = for
-first({) = {
-first(break) = break
-first(;) = ;
+# first(VARDECL) = int, float, string, tint, tfloat, tstring 
+# first(ATRIBSTAT) = ident
+# first(PRINTSTAT) = print 
+# first(READSTAT) = read
+# first(IFSTAT) = if
+# first(FORSTAT) = for
+# first({) = {
+# first(break) = break
+# first(;) = ;
  
 INDEX  ->  [int_constant] INDEX'  
 # INDEX possui apenas uma produção,
@@ -95,8 +95,8 @@ INDEX' ->  e
 # Observando todos as produções de INDEX',
 # pode-se observar que não existe intersecções entre os firsts de suas produções,
 # uma vez que:
-first(INDEX) = [
-first(e) = e
+# first(INDEX) = [
+# first(e) = e
 # Uma vez que INDEX'->* e, podemos checar que a interseção entre
 # seu follow e os firsts de suas produções é vazio
 follow(INDEX') = ;
@@ -114,12 +114,12 @@ VARDECL  ->  tstring ident INDEX_T
 # Observando todos as produções de VARDECL,
 # pode-se observar que não existe intersecções entre os firsts de suas produções,
 # uma vez que:
-first(int) = int
-first(float) = float
-first(string) = string
-first(tint) = tint
-first(tfloat) = tfloat
-first(tstring) = tstring
+# first(int) = int
+# first(float) = float
+# first(string) = string
+# first(tint) = tint
+# first(tfloat) = tfloat
+# first(tstring) = tstring
 
 ATRIBSTAT  -> LVALUE = ATRIBSTAT'
 # ATRIBSTAT possui apenas uma produção,
@@ -131,9 +131,9 @@ ATRIBSTAT' -> FUNCCALL
 # Observando todos as produções de ATRIBSTAT',
 # pode-se observar que não existe intersecções entre os firsts de suas produções,
 # uma vez que:
-first(EXPRESSION) = not, bool, (
-first(ALLOCEXPRESSION) = new
-first(FUNCCALL) = call
+# first(EXPRESSION) = not, (
+# first(ALLOCEXPRESSION) = new
+# first(FUNCCALL) = call
  
 FUNCCALL  ->  call(ident(PARAMLISTCALL))
 # FUNCCALL possui apenas uma produção,
@@ -144,8 +144,8 @@ PARAMLISTCALL  ->  e
 # Observando todos as produções de PARAMLISTCALL,
 # pode-se observar que não existe intersecções entre os firsts de suas produções,
 # uma vez que:
-first(ident) = ident
-first(e) = e
+# first(ident) = ident
+# first(e) = e
 # Uma vez que PARAMLISTCALL->* e, podemos checar que a interseção entre
 # seu follow e os firsts de suas produções é vazio
 # follow(PARAMLISTCALL) = )
@@ -155,8 +155,8 @@ PARAMLISTCALL' ->  e
 # Observando todos as produções de PARAMLISTCALL',
 # pode-se observar que não existe intersecções entre os firsts de suas produções,
 # uma vez que:
-first(,) = ,
-first(e) = e
+# first(,) = ,
+# first(e) = e
 # Uma vez que PARAMLISTCALL'->* e, podemos checar que a interseção entre
 # seu follow e os firsts de suas produções é vazio
 # follow(PARAMLISTCALL') = )
@@ -178,13 +178,13 @@ RETURNSTAT' ->  e
 # Observando todos as produções de RETURNSTAT',
 # pode-se observar que não existe intersecções entre os firsts de suas produções,
 # uma vez que:
-first(ident) = ident
-first(e) = e
+# first(ident) = ident
+# first(e) = e
 # Uma vez que RETURNSTAT'->* e, podemos checar que a interseção entre
 # seu follow e os firsts de suas produções é vazio
 # follow(RETURNSTAT') = ;
  
-IFSTAT  ->  if(EXPRESSION) STATEMENT IFSTAT'
+IFSTAT  ->  if(EXPRESSION) {STATEMENT} IFSTAT'
 # IFSTAT possui apenas uma produção,
 # consequentemente não quebra os requisitos para LL1
 
@@ -193,99 +193,221 @@ IFSTAT' ->  e
 # Observando todos as produções de IFSTAT',
 # pode-se observar que não existe intersecções entre os firsts de suas produções,
 # uma vez que:
-first(else) = else
-first(e) = e
+# first(else) = else
+# first(e) = e
 # Uma vez que IFSTAT'->* e, podemos checar que a interseção entre
 # seu follow e os firsts de suas produções é vazio
-# follow(IFSTAT') = {, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read, else, }, $
+# follow(IFSTAT') = {, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read, }, $ 
 
-# Observando todas as produções do não terminal FORSTAT, 
-# pode ser observar que nenhuma delas tem o mesmo prefixo  
 FORSTAT  ->  for(ATRIBSTAT; EXPRESSION; ATRIBSTAT) STATEMENT
- 
-# Observando todas as produções do não terminal STATELIST, 
-# pode ser observar que nenhuma delas tem o mesmo prefixo  
+# FORSTAT possui apenas uma produção,
+# consequentemente não quebra os requisitos para LL1
+
 STATELIST  ->  STATEMENT STATELIST'
+# STATELIST possui apenas uma produção,
+# consequentemente não quebra os requisitos para LL1
+
 STATELIST' ->  STATELIST
 STATELIST' ->  e
+# Observando todos as produções de IFSTAT',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(STATELIST) = {, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read
+# first(e) = e
+# Uma vez que STATELIST'->* e, podemos checar que a interseção entre
+# seu follow e os firsts de suas produções é vazio
+# follow(STATELIST') = }
  
-# Observando todas as produções do não terminal ALLOCAUX, 
-# pode ser observar que nenhuma delas tem o mesmo prefixo  
 ALLOCAUX  ->  [NUMEXPRESSION] ALLOCAUX'
+# ALLOCAUX possui apenas uma produção,
+# consequentemente não quebra os requisitos para LL1
+
 ALLOCAUX' ->  ALLOCAUX
 ALLOCAUX' ->  e
+# Observando todos as produções de ALLOCAUX',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(ALLOCAUX) = [
+# first(e) = e
+# Uma vez que ALLOCAUX'->* e, podemos checar que a interseção entre
+# seu follow e os firsts de suas produções é vazio
+# follow(ALLOCAUX') = *, =, /, %, +, -, ), int_constant, float_constant, string_constant, null, (, ident, <, >, <=, >=, ==, !=, ], ; 
  
-# Observando todas as produções do não terminal ALLOCEXPRESSION, 
-# pode ser observar que nenhuma delas tem o mesmo prefixo  
+ 
 ALLOCEXPRESSION  ->  new ALLOCEXPRESSION'
-ALLOCEXPRESSION' ->  int ALLOCAUX  
+# ALLOCEXPRESSION possui apenas uma produção,
+# consequentemente não quebra os requisitos para LL1
+
+ALLOCEXPRESSION' ->  int ALLOCAUX
 ALLOCEXPRESSION' ->  float ALLOCAUX  
 ALLOCEXPRESSION' ->  string ALLOCAUX  
+# Observando todos as produções de ALLOCEXPRESSION',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(int) = int
+# first(float) = float
+# first(string) = string
  
-# Observando todas as produções do não terminal RELOP, 
-# pode ser observar que nenhuma delas tem o mesmo prefixo  
 RELOP  ->  <  
 RELOP  ->  >  
 RELOP  ->  <=  
 RELOP  ->  >=  
 RELOP  ->  ==  
 RELOP  ->  !=
+# Observando todos as produções de ALLOCEXPRESSION',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(<) = <
+# first(>) = >
+# first(<=) = <=
+# first(>=) = >=
+# first(==) = ==
+# first(!=) = !=
  
-# Observando todas as produções do não terminal EXPRESSION_*, 
-# pode ser observar que nenhuma delas tem o mesmo prefixo  
 EXPRESSION    -> EXPRESSION_2 EXPRESSION'
+# EXPRESSION possui apenas uma produção,
+# consequentemente não quebra os requisitos para LL1
+
 EXPRESSION'   -> or EXPRESSION_2
 EXPRESSION'   -> e
+# Observando todos as produções de EXPRESSION',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(or) = or
+# first(e) = e
+# Uma vez que EXPRESSION'->* e, podemos checar que a interseção entre
+# seu follow e os firsts de suas produções é vazio
+# follow(EXPRESSION') = ), ; 
+
 EXPRESSION_2  -> EXPRESSION_3 EXPRESSION_2'
+# EXPRESSION_2 possui apenas uma produção,
+# consequentemente não quebra os requisitos para LL1
+
 EXPRESSION_2' -> and EXPRESSION_3
 EXPRESSION_2' -> e
+# Observando todos as produções de EXPRESSION_2',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(and) = and
+# first(e) = e
+# Uma vez que EXPRESSION_2'->* e, podemos checar que a interseção entre
+# seu follow e os firsts de suas produções é vazio
+# follow(EXPRESSION_2') = or, ), ;
+
 EXPRESSION_3  -> not EXPRESSION_4
 EXPRESSION_3  -> EXPRESSION_4
-EXPRESSION_4  -> bool(NUMEXPRESSION EXPRESSION_4')
+# Observando todos as produções de EXPRESSION_3,
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(not) = not
+# first(EXPRESSION_4) = (
+
+EXPRESSION_4  -> NUMEXPRESSION EXPRESSION_4'
 EXPRESSION_4  -> (EXPRESSION)
+# Observando todos as produções de EXPRESSION_4,
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(NUMEXPRESSION) = +, -, int_constant, float_constant, string_constant, null, num, ident
+# first(() = (
+
 EXPRESSION_4' -> RELOP NUMEXPRESSION
 EXPRESSION_4' -> e
+# Observando todos as produções de EXPRESSION_4',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(RELOP) = +, -, int_constant, float_constant, string_constant, null, num, ident
+# first(e) = e
+# Uma vez que EXPRESSION_2'->* e, podemos checar que a interseção entre
+# seu follow e os firsts de suas produções é vazio
+# follow(EXPRESSION_4') = )
  
-# Observando todas as produções do não terminal NUMEXPRESSIONAUX, 
-# pode ser observar que nenhuma delas tem o mesmo prefixo
 NUMEXPRESSIONAUX  ->  +NUMEXPRESSION  
 NUMEXPRESSIONAUX  ->  -NUMEXPRESSION
+# Observando todos as produções de NUMEXPRESSIONAUX,
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(+) = +
+# first(-) = -
  
-# Observando todas as produções do não terminal NUMEXPRESSION, 
-# pode ser observar que nenhuma delas tem o mesmo prefixo
 NUMEXPRESSION   ->  TERM NUMEXPRESSION'
+# NUMEXPRESSION possui apenas uma produção,
+# consequentemente não quebra os requisitos para LL1
+
 NUMEXPRESSION'  ->  NUMEXPRESSIONAUX
 NUMEXPRESSION'  ->  e
+# Observando todos as produções de NUMEXPRESSION',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(NUMEXPRESSIONAUX) = +, -
+# first(e) = e
+# Uma vez que NUMEXPRESSION'->* e, podemos checar que a interseção entre
+# seu follow e os firsts de suas produções é vazio
+# follow(NUMEXPRESSION') = ), <, >, <=, >=, ==, !=, ], and, or, ;
 
-# Observando todas as produções do não terminal TERM, 
-# pode ser observar que nenhuma delas tem o mesmo prefixo
 TERM  ->  UNARYEXPR TERM'  
+# TERM possui apenas uma produção,
+# consequentemente não quebra os requisitos para LL1
+
 TERM' ->  UNARYEXPRAUX
 TERM' ->  e
+# Observando todos as produções de TERM',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(UNARYEXPRAUX) = *, /, %
+# first(e) = e
+# Uma vez que TERM'->* e, podemos checar que a interseção entre
+# seu follow e os firsts de suas produções é vazio
+# follow(TERM') = +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
  
-# Observando todas as produções do não terminal UNARYEXPRAUX, 
-# pode ser observar que nenhuma delas tem o mesmo prefixo
 UNARYEXPRAUX  ->  *UNARYEXPR  
 UNARYEXPRAUX  ->  /UNARYEXPR  
 UNARYEXPRAUX  ->  %UNARYEXPR
+# Observando todos as produções de TERM',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(*) = *
+# first(/) = /
+# first(%) = %
  
-# Observando todas as produções do não terminal UNARYEXPR, 
-# pode ser observar que nenhuma delas tem o mesmo prefixo
 UNARYEXPR  ->  +FACTOR  
 UNARYEXPR  ->  -FACTOR  
 UNARYEXPR  ->  FACTOR
+# Observando todos as produções de TERM',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(+) = +
+# first(-) = -
+# first(FACTOR) = *, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
  
-# Observando todas as produções do não terminal FACTOR, 
-# pode ser observar que nenhuma delas tem o mesmo prefixo
 FACTOR  ->  int_constant  
 FACTOR  ->  float_constant  
 FACTOR  ->  string_constant  
 FACTOR  ->  null  
 FACTOR  ->  LVALUE  
-FACTOR  ->  (NUMEXPRESSION)
+FACTOR  ->  num(NUMEXPRESSION)
+# Observando todos as produções de TERM',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(int_constant) = int_constant
+# first(float_constant) = float_constant
+# first(string_constant) = string_constant
+# first(null) = null
+# first(LVALUE) = =, *, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
+# first(num) = num
 
 # Observando todas as produções do não terminal LVALUE, 
 # pode ser observar que nenhuma delas tem o mesmo prefixo 
 LVALUE  ->  ident LVALUE'
-LVALUE' ->  e 
+# LVALUE possui apenas uma produção,
+# consequentemente não quebra os requisitos para LL1
+
 LVALUE' ->  ALLOCAUX 
+LVALUE' ->  e 
+# Observando todos as produções de TERM',
+# pode-se observar que não existe intersecções entre os firsts de suas produções,
+# uma vez que:
+# first(ALLOCAUX) = [
+# first(e) = e
+# Uma vez que LVALUE'->* e, podemos checar que a interseção entre
+# seu follow e os firsts de suas produções é vazio
+# follow(LVALUE') = =, *, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
