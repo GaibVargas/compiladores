@@ -1,54 +1,54 @@
-Non-Terminal Symbol	Follow Set
-PROGRAM	$
-FUNCLIST	$
-FUNCLIST'	$
-FUNCDEF	def, $
-PARAMLIST	)
-PARAMLISTINT	)
-PARAMLISTFLOAT	)
-PARAMLISTSTRING	)
-PARAMLISTTINT	)
-PARAMLISTTFLOAT	)
-PARAMLISTTSTRING	)
-STATEMENT	{, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read, else, }, $
-INDEX	;
-INDEX'	;
-INDEX_T	v, ;, )
-VARDECL	;
-VARDECL'	;
-ATRIBSTAT	;, )
-ATRIBSTAT'	;, )
-FUNCCALL	;, )
-PARAMLISTCALL	)
-PARAMLISTCALL'	)
-PRINTSTAT	;
-READSTAT	;
-RETURNSTAT	;
-RETURNSTAT'	;
-IFSTAT	{, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read, else, }, $
-IFSTAT'	{, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read, else, }, $
-FORSTAT	{, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read, else, }, $
-STATELIST	}
-STATELIST'	}
-ALLOCAUX	=, *, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
-ALLOCAUX'	=, *, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
-ALLOCEXPRESSION	;, )
-ALLOCEXPRESSION'	;, )
-RELOP	+, -, int_constant, float_constant, string_constant, null, (, ident
-EXPRESSION	), ;
-EXPRESSION_2'	), ;
-EXPRESSION_2	or, ), ;
-EXPRESSION_3'	or, ), ;
-EXPRESSION_3	and, or, ), ;
-EXPRESSION_4	and, or, ), ;
-EXPRESSION_4'	and, or, ), ;
-NUMEXPRESSIONAUX	), <, >, <=, >=, ==, !=, ], and, or, ;
-NUMEXPRESSION	), <, >, <=, >=, ==, !=, ], and, or, ;
-NUMEXPRESSION'	), <, >, <=, >=, ==, !=, ], and, or, ;
-TERM	+, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
-TERM'	+, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
-UNARYEXPRAUX	+, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
-UNARYEXPR	*, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
-FACTOR	*, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
-LVALUE	=, *, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
-LVALUE'	=, *, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
+Non-Terminal Symbol 	Follow Set
+PROGRAM 	$
+FUNCLIST 	$
+FUNCLIST' 	$
+FUNCDEF 	def, $
+PARAMLIST 	)
+PARAMLISTINT 	)
+PARAMLISTFLOAT 	)
+PARAMLISTSTRING 	)
+PARAMLISTTINT 	)
+PARAMLISTTFLOAT 	)
+PARAMLISTTSTRING 	)
+STATEMENT 	{, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read, }, $
+INDEX 	;
+INDEX' 	;
+INDEX_T 	v, ;, )
+VARDECL 	;
+VARDECL' 	;
+ATRIBSTAT 	;, )
+ATRIBSTAT' 	;, )
+FUNCCALL 	;, )
+PARAMLISTCALL 	)
+PARAMLISTCALL' 	)
+PRINTSTAT 	;
+READSTAT 	;
+RETURNSTAT 	;
+RETURNSTAT' 	;
+IFSTAT 	{, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read, }, $
+IFSTAT' 	{, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read, }, $
+FORSTAT 	{, break, ;, int, float, string, tint, tfloat, tstring, print, return, for, ident, if, read, }, $
+STATELIST 	}
+STATELIST' 	}
+ALLOCAUX 	=, *, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
+ALLOCAUX' 	=, *, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
+ALLOCEXPRESSION 	;, )
+ALLOCEXPRESSION' 	;, )
+RELOP 	+, -, int_constant, float_constant, string_constant, null, num, ident
+EXPRESSION 	), ;
+EXPRESSION' 	), ;
+EXPRESSION_2 	or, ), ;
+EXPRESSION_2' 	or, ), ;
+EXPRESSION_3 	and, or, ), ;
+EXPRESSION_4 	and, or, ), ;
+EXPRESSION_4' 	and, or, ), ;
+NUMEXPRESSIONAUX 	), <, >, <=, >=, ==, !=, ], and, or, ;
+NUMEXPRESSION 	), <, >, <=, >=, ==, !=, ], and, or, ;
+NUMEXPRESSION' 	), <, >, <=, >=, ==, !=, ], and, or, ;
+TERM 	+, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
+TERM' 	+, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
+UNARYEXPRAUX 	+, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
+UNARYEXPR 	*, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
+FACTOR 	*, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
+LVALUE 	=, *, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
+LVALUE' 	=, *, /, %, +, -, ), <, >, <=, >=, ==, !=, ], and, or, ;
